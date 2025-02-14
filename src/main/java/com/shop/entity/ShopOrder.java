@@ -2,7 +2,6 @@ package com.shop.entity;
 
 import com.shop.constant.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
