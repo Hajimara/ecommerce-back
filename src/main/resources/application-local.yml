@@ -1,0 +1,54 @@
+### 로컬 환경 변수
+server:
+  port: 80
+
+jwt:
+  secret: bf36a550f4c2fcaac8d32daef0939b82c27a23028401ddb2f5a4b1ee018fb795fb29fade35d09f2f5284a76a50cc4fbed8a386db02c635df05472cc3aed03e76d7abb091837ec724d7f763faca15d7c9f01b7017369a51a6ca91af90
+  # 24시간, 30일
+  access-token-validity-in-seconds: 86400
+  refresh-token-validity-in-seconds: 2592000
+
+spring:
+  application:
+    name: Ecommerce
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://DESKTOP-2S6GQ92:1433;databaseName=ECommerceDB;trustServerCertificate=true
+    username: sa
+    password: qwer1234%%
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        highlight_sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  devtools:
+    restart:
+      enabled: true
+      additional-exclude: static/**,public/**
+    livereload:
+      enabled: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 50MB
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+      hibernate:
+        orm:
+          jdbc:
+            bind: TRACE
+
+env:
+  security:
+    allowed_origin: http://localhost:3000
+
+
