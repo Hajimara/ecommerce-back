@@ -56,7 +56,7 @@ public class Customer {
     private List<ShopOrder> orderList = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Address> addresseList = new ArrayList<>();
+    private List<Address> addressList = new ArrayList<>();
 
     @Builder
     public Customer(
@@ -76,6 +76,6 @@ public class Customer {
         this.birthDate = birthDate;
         this.membershipLevel = membershipLevel != null ? membershipLevel : MembershipLevel.BASIC;
         this.orderList = new ArrayList<>();
-        this.addresseList = new ArrayList<>();
+        this.addressList = new ArrayList<>();
     }
 }

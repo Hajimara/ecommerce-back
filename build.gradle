@@ -109,8 +109,22 @@ bootJar {
     }
 }
 
+// Enable Java Preview (1)
+compileJava {
+    options.compilerArgs += ['--enable-preview', '-Amapstruct.defaultComponentModel=spring']
+}
+
+// Enable Java Preview (2)
+compileTestJava {
+    options.compilerArgs += ['--enable-preview', '-Amapstruct.defaultComponentModel=spring']
+}
+
 // test 설정 (JUnit 5 + REST Docs)
 test {
     useJUnitPlatform()
     outputs.dir snippetsDir
+    jvmArgs(['--enable-preview', '-Amapstruct.defaultComponentModel=spring'])
+
 }
+
+
