@@ -18,11 +18,19 @@ public class ControllerCustomer {
 
     @PostMapping
     public ResponseEntity<ApiResult> registerCustomer(@Valid @RequestBody RegisterCustomerDto registerCustomerDto) {
-        System.out.println("📌 [DEBUG] Received Password: " + registerCustomerDto.getPassword());
         ApiResult apiResult = new ApiResult();
         CustomerIdDto customerIdDto = processCustomer.register(registerCustomerDto);
 
         apiResult.setData(customerIdDto);
+
+        return ResponseEntity.ok().body(apiResult);
+    }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<ApiResult> deleteCustomer(@Valid @PathVariable Long customerId) {
+        ApiResult apiResult = new ApiResult();
+
+        processCustomer.delete(customerId);
 
         return ResponseEntity.ok().body(apiResult);
     }

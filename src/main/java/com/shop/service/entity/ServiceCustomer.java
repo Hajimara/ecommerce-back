@@ -30,6 +30,10 @@ public class ServiceCustomer {
         return repositoryCustomer.save(customer);
     }
 
+    public void delete (Long customerId){
+        repositoryCustomer.deleteById(customerId);
+    }
+
     public CustomerDto toCustomerDto(Customer customer) {
         return mapperCustomer.toCustomerDto(customer);
     }

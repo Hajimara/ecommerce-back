@@ -1,5 +1,6 @@
 package com.shop.service;
 
+import com.shop.dto.customer.request.LoginCustomerDto;
 import com.shop.dto.customer.request.RegisterCustomerDto;
 import com.shop.dto.customer.response.CustomerDto;
 import com.shop.dto.customer.response.CustomerIdDto;
@@ -51,6 +52,10 @@ public class ProcessCustomer {
         serviceCustomer.create(customer, addressList);
 
         return serviceCustomer.toCustomerIdDto(customer);
+    }
+
+    public void delete(Long customerId) {
+        serviceCustomer.delete(customerId);
     }
 
     // 특정고객 조회 및 주소 매칭
