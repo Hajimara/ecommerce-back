@@ -58,6 +58,10 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addressList = new ArrayList<>();
 
+    public void updateAddress(List<Address> addressList) {
+        this.addressList.addAll(addressList);
+    }
+
     @Builder
     public Customer(
             Long customerId,
