@@ -1,6 +1,5 @@
 package com.shop.service;
 
-import com.shop.dto.customer.request.LoginCustomerDto;
 import com.shop.dto.customer.request.RegisterCustomerDto;
 import com.shop.dto.customer.response.CustomerDto;
 import com.shop.dto.customer.response.CustomerIdDto;

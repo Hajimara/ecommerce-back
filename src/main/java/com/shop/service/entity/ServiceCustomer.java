@@ -1,5 +1,7 @@
 package com.shop.service.entity;
 
+import com.shop.ExceptionNotFound;
+import com.shop.constant.enums.ErrorCode;
 import com.shop.dto.customer.request.RegisterCustomerDto;
 import com.shop.dto.customer.response.CustomerDto;
 import com.shop.dto.customer.response.CustomerIdDto;
@@ -44,5 +46,10 @@ public class ServiceCustomer {
 
     public Customer toEntity(RegisterCustomerDto registerCustomerDto) {
         return mapperCustomer.toEntity(registerCustomerDto);
+    }
+
+    public Customer getByEmailElseThrow(String email) {
+        return repositoryCustomer.findByEmail(email)
+                .orElseThrow(() -> new ExceptionNotFound(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

@@ -69,10 +69,12 @@ public class SecurityConfig {
             headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)) // 같은 출처의 iframe 허용
         .sessionManagement(sessionConfig ->
             sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // JWT 기반 인증을 사용하므로 세션을 사용하지 않음
+                
         .authorizeHttpRequests(authorizeRequests -> authorizeRequests
             .requestMatchers(HttpMethod.POST, "/customer").permitAll() // 회원가입 (POST /customer) 요청은 인증 없이 허용
             .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
         )
+
         // UsernamePasswordAuthenticationFilter는 Spring Security에서 기본적으로 제공하는 로그인(인증) 필터
         // 사용자가 **ID(Username) + 비밀번호(Password)**를 입력하면, 이를 처리하는 기본 인증 필터로 작동
         // JwtFilter를 UsernamePasswordAuthenticationFilter 앞에 배치하여, 모든 요청이 Security 필터를 통과하기 전에 JWT 검증을 수행하도록 설정
