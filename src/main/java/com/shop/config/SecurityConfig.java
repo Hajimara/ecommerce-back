@@ -4,6 +4,7 @@ import com.shop.config.jwt.JwtAuthenticationEntryPoint;
 import com.shop.config.jwt.JwtFilter;
 import com.shop.config.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,8 +43,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
         .csrf(AbstractHttpConfigurer::disable) // JWT 사용 시 CSRF 필요 없음 → 비활성화
+
         .cors(cors -> {
             CorsConfigurationSource source = request -> { // 요청이 들어오면 CORS 설정 적용
                 CorsConfiguration config = new CorsConfiguration();
@@ -61,17 +64,21 @@ public class SecurityConfig {
             };
             cors.configurationSource(source); // CORS 설정을 Security에 적용
         })
+
         .exceptionHandling(exceptionConfig ->
             exceptionConfig.authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증 실패 시 (401)
 //                .accessDeniedHandler(jwtAccessDeniedHandler) // 접근 거부 시 (403)
         )
+
         .headers(headerConfig ->
             headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)) // 같은 출처의 iframe 허용
+
         .sessionManagement(sessionConfig ->
             sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // JWT 기반 인증을 사용하므로 세션을 사용하지 않음
                 
         .authorizeHttpRequests(authorizeRequests -> authorizeRequests
             .requestMatchers(HttpMethod.POST, "/customer").permitAll() // 회원가입 (POST /customer) 요청은 인증 없이 허용
+            .requestMatchers(HttpMethod.POST, "/authenticate").permitAll() // 인증 (POST /authenticate) 요청은 인증 없이 허용
             .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
         )
 
