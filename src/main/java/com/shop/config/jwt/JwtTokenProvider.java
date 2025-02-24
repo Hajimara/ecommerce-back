@@ -1,7 +1,7 @@
 package com.shop.config.jwt;
 
-import com.shop.constant.Constants;
-import com.shop.constant.utils.UtilString;
+import com.shop.constant.ConstantString;
+import com.shop.constant.ConstantTime;
 import com.shop.dto.common.TokenData;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -36,12 +36,12 @@ public class JwtTokenProvider implements InitializingBean {
 
     public JwtTokenProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.access-token-validity-in-seconds}") long accessTokenValidityInSeconds,
-            @Value("${jwt.refresh-token-validity-in-seconds}") long refreshTokenValidityInSeconds
+            @Value("${jwt.access-token-validity-in-seconds}") long accessTokenValidityInSeconds, // 24시간
+            @Value("${jwt.refresh-token-validity-in-seconds}") long refreshTokenValidityInSeconds // 30일
     ) {
         this.secret = secret;
-        this.accessTokenValidityInMilliseconds = accessTokenValidityInSeconds * 1000;
-        this.refreshTokenValidityInMilliseconds = refreshTokenValidityInSeconds * 1000;
+        this.accessTokenValidityInMilliseconds = accessTokenValidityInSeconds * ConstantTime.SECOND;
+        this.refreshTokenValidityInMilliseconds = refreshTokenValidityInSeconds * ConstantTime.SECOND;
     }
 
     /**
@@ -84,7 +84,7 @@ public class JwtTokenProvider implements InitializingBean {
         return Jwts.builder()
                 .setSubject(authentication.getName()) // 토큰 대상 설정 (사용자 아이디)
                 .claim(AUTHORITIES_KEY, authorities) // 권한 정보 추가
-                .claim(Constants.CUSTOMER_ID, user.getCustomerId()) // 사용자 ID 추가
+                .claim(ConstantString.CUSTOMER_ID, user.getCustomerId()) // 사용자 ID 추가
                 .signWith(key, SignatureAlgorithm.HS512) // HMAC SHA-512 알고리즘으로 서명
                 .setExpiration(validity) // 만료 시간 설정
                 .compact();
@@ -122,7 +122,7 @@ public class JwtTokenProvider implements InitializingBean {
 
         // (2) 토큰에 필수 데이터가 포함되어 있는지 검증 (누락된 경우 인증 실패)
         if (claims.get(AUTHORITIES_KEY) == null ||
-                claims.get(Constants.CUSTOMER_ID) == null
+                claims.get(ConstantString.CUSTOMER_ID) == null
         ) {
             return null; // 필수 정보가 없으면 인증 실패 (null 반환)
         }
@@ -133,7 +133,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .toList(); // 리스트로 변환
 
         // (4) 토큰에서 사용자 관련 정보를 추출 (회원 ID, 회사 ID, 직급 레벨)
-        Long customerId = Long.parseLong(claims.get(Constants.CUSTOMER_ID).toString());
+        Long customerId = Long.parseLong(claims.get(ConstantString.CUSTOMER_ID).toString());
 
         // (5) JwtUser 객체를 생성 (사용자 정보와 권한을 포함한 커스텀 유저 객체)
         JwtUser principal = new JwtUser(claims.getSubject(), "", authorities, customerId);
@@ -186,7 +186,7 @@ public class JwtTokenProvider implements InitializingBean {
      * HTTP 요청에서 JWT 토큰을 추출하여 권한 목록 가져오기
      */
     public List<String> getJobCodesByRequest(HttpServletRequest request) {
-        String token = request.getHeader(Constants.AUTHORIZATION);
+        String token = request.getHeader(ConstantString.AUTHORIZATION);
         return getJobCodesByToken(token);
     }
 
@@ -202,7 +202,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .parseClaimsJws(getToken(token))
                 .getBody();
 
-        Long customerId = claims.get(Constants.CUSTOMER_ID) == null ? null : Long.parseLong(claims.get(Constants.CUSTOMER_ID).toString());
+        Long customerId = claims.get(ConstantString.CUSTOMER_ID) == null ? null : Long.parseLong(claims.get(ConstantString.CUSTOMER_ID).toString());
 
         tokenData.setCustomerId(customerId);
         tokenData.setId(claims.getSubject());
@@ -214,7 +214,7 @@ public class JwtTokenProvider implements InitializingBean {
      * HTTP 요청에서 JWT 토큰을 추출하여 TokenData 변환
      */
     public TokenData getTokenData(HttpServletRequest request) {
-        return getTokenDataByToken(request.getHeader(Constants.AUTHORIZATION));
+        return getTokenDataByToken(request.getHeader(ConstantString.AUTHORIZATION));
     }
 
     /**

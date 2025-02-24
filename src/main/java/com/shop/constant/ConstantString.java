@@ -1,7 +1,7 @@
 package com.shop.constant;
 
-public class Constants {
-    private Constants() {}
+public class ConstantString {
+    private ConstantString() {}
 
     public static final String AUTHORIZATION = "Authorization";
     public static final String CUSTOMER_ID = "customerId";

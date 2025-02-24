@@ -1,6 +1,6 @@
 package com.shop.config.jwt;
 
-import com.shop.constant.Constants;
+import com.shop.constant.ConstantString;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -76,7 +76,7 @@ public class JwtFilter extends GenericFilterBean {
      * @return JWT 토큰 (Bearer 제거 후 반환), 없으면 null 반환
      */
     private String extractToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(Constants.AUTHORIZATION); // Authorization 헤더에서 토큰 추출
+        String bearerToken = request.getHeader(ConstantString.AUTHORIZATION); // Authorization 헤더에서 토큰 추출
 
         // 토큰이 존재하고 "Bearer "로 시작하는 경우 "Bearer " 부분 제거 후 반환
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
