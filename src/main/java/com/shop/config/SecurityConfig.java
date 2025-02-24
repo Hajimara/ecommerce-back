@@ -79,6 +79,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(authorizeRequests -> authorizeRequests
             .requestMatchers(HttpMethod.POST, "/customer").permitAll() // 회원가입 (POST /customer) 요청은 인증 없이 허용
             .requestMatchers(HttpMethod.POST, "/authenticate").permitAll() // 인증 (POST /authenticate) 요청은 인증 없이 허용
+            .requestMatchers(HttpMethod.POST, "/refresh").permitAll() // 인증 갱신 (POST /refresh) 요청은 인증 없이 허용
             .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
         )
 

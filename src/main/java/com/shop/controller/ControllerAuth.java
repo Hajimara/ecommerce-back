@@ -1,6 +1,8 @@
 package com.shop.controller;
 
 import com.shop.dto.auth.request.LoginDto;
+import com.shop.dto.auth.request.ModifyAccessTokenDto;
+import com.shop.dto.auth.response.AccessTokenDto;
 import com.shop.dto.auth.response.TokenDto;
 import com.shop.dto.common.ApiResult;
 import com.shop.service.ProcessAuth;
@@ -29,6 +31,17 @@ public class ControllerAuth {
         TokenDto tokenDto = processAuth.authorization(loginDto);
 
         apiResult.setData(tokenDto);
+
+        return ResponseEntity.ok().body(apiResult);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResult> modifyAccessToken(@Valid @RequestBody ModifyAccessTokenDto modifyAccessTokenDto) {
+        ApiResult apiResult = new ApiResult();
+
+        AccessTokenDto accessTokenDto = processAuth.modifyAccessToken(modifyAccessTokenDto);
+
+        apiResult.setData(accessTokenDto);
 
         return ResponseEntity.ok().body(apiResult);
     }
